@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulação de Came Cilíndrico</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <!-- Painel de Controle -->
+    <div id="ui-panel">
+      <h2>Mecanismo de Came Cilíndrico</h2>
+      <p>Simulação Interativa 3D com Física</p>
+      <div class="control-group">
+        <label>Alvo de Velocidade (Motor):</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <input type="range" id="speed-slider" min="-0.1" max="0.1" step="0.005" value="0.03" style="flex: 1;">
+          <input type="number" id="speed-input" min="-0.1" max="0.1" step="0.005" value="0.03" style="width: 70px; background: rgba(0,0,0,0.5); color: white; border: 1px solid #444; border-radius: 4px; padding: 2px 5px;">
+        </div>
+      </div>
+      <div class="control-group">
+        <label>Massa Arrastada (Kg):</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <input type="range" id="mass-slider" min="0.1" max="50.0" step="0.1" value="5.0" style="flex: 1;">
+          <input type="number" id="mass-input" min="0.1" max="50.0" step="0.1" value="5.0" style="width: 70px; background: rgba(0,0,0,0.5); color: white; border: 1px solid #444; border-radius: 4px; padding: 2px 5px;">
+        </div>
+      </div>
+      <div class="control-group">
+        <label>Gravidade (m/s²):</label>
+        <input type="number" id="gravity-input" min="0" max="25" step="0.1" value="9.8" style="width: 100%; background: rgba(0,0,0,0.5); color: white; border: 1px solid #444; border-radius: 4px; padding: 5px;">
+      </div>
+      <div class="control-group">
+        <label>Coef. de Atrito da Haste (μ):</label>
+        <input type="number" id="friction-input" min="0" max="1" step="0.05" value="0.3" style="width: 100%; background: rgba(0,0,0,0.5); color: white; border: 1px solid #444; border-radius: 4px; padding: 5px;">
+      </div>
+      <p class="hint">Use o mouse para girar, dar zoom e mover a câmera.</p>
+    </div>
+    <div id="error-log" style="position: absolute; bottom: 20px; left: 20px; color: red; background: black; padding: 10px; z-index: 100; font-family: monospace;"></div>
+    <script>
+      window.addEventListener('error', function(e) {
+        document.getElementById('error-log').innerHTML += e.message + '<br>' + e.filename + ':' + e.lineno + '<br>';
+      });
+      window.addEventListener('unhandledrejection', function(e) {
+        document.getElementById('error-log').innerHTML += 'Promise rejection: ' + e.reason + '<br>';
+      });
+    </script>
+
+
+    <!-- Painel de Gráficos -->
+    <div id="chart-panel">
+      <h3>Análise Dinâmica e Forças</h3>
+      <div class="chart-container" style="height: 120px; width: 100%;">
+        <canvas id="posChart"></canvas>
+      </div>
+      <div class="chart-container" style="height: 120px; width: 100%; margin-top: 5px;">
+        <canvas id="velChart"></canvas>
+      </div>
+      <div class="chart-container" style="height: 120px; width: 100%; margin-top: 5px;">
+        <canvas id="forceChart"></canvas>
+      </div>
+    </div>
+    
+    <!-- Import Maps para Three.js e Bibliotecas CSG -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+          "three-csg-ts": "https://unpkg.com/three-csg-ts@3.2.0/lib/esm/index.js"
+        }
+      }
+    </script>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
